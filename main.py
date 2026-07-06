@@ -1,9 +1,8 @@
-from models.beam import Beam
+from models.node import Node
+from models.frameelement import FrameElement
 
-beam = Beam(2, 210, 100000000)
+node_1 = Node(1, 0, 0)
+node_2 = Node(1, 1, 0)
 
-beam.add_point_load(1, 1)
-beam.add_support(type="pinned", x=0)
-beam.add_support(type="roller", x=2)
-
-print(beam.loads)
+beam = FrameElement(node_1, node_2, 210, 100, 10e8)
+print(beam.start)
