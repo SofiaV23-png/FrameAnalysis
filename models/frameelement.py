@@ -5,7 +5,7 @@ class FrameElement:
     def __init__(self, start, end, E, A, I):
         self.start = start
         self.end = end
-        # Units are GPa for E, mm^2 for A, mm^4 for I
+        # Units are MPa for E, mm^2 for A, mm^4 for I
         self.E = E
         self.A = A
         self.I = I
@@ -22,20 +22,23 @@ class FrameElement:
     
     def local_stiffness(self):
         # in elemental coordinate system
-        local_stiffness_matrix = np.array([[self.A, 0, 0, -self.A, 0, 0],
-                                  [0, 12*self.I/(self.L)**2, 6*self.I/self.L, 0, -12*self.I/(self.L)**2, 6*self.I/self.L],
-                                  [0, 6*self.I/self.L, 4*self.I, 0, -6*self.I/self.L, 2*self.I],
+        # stiffness matrix is in N/mm
+        L = self.length()
+        local_stiffness_matrix = (self.E / L) * np.array([[self.A, 0, 0, -self.A, 0, 0],
+                                  [0, 12*self.I/(L)**2, 6*self.I/L, 0, -12*self.I/(L)**2, 6*self.I/L],
+                                  [0, 6*self.I/L, 4*self.I, 0, -6*self.I/L, 2*self.I],
                                   [-self.A, 0, 0, self.A, 0, 0],
-                                  [0, -12*self.I/(self.L)**2, -6*self.I/self.L, 0, 12*self.I/(self.L)**2, -6*self.I/self.L],
-                                  [0, 6*self.I/self.L, 2*self.I, 0, -6*self.I/self.L, 4*self.I]])
+                                  [0, -12*self.I/(L)**2, -6*self.I/L, 0, 12*self.I/(L)**2, -6*self.I/L],
+                                  [0, 6*self.I/L, 2*self.I, 0, -6*self.I/L, 4*self.I]])
         return local_stiffness_matrix
     
     def translation(self):
-        translation_matrix = np.array([[np.cos(self.angle), np.sin(self.angle), 0, 0, 0, 0],
-                              [-np.sin(self.angle), np.cos(self.angle), 0, 0, 0, 0],
+        theta = self.angle()
+        translation_matrix = np.array([[np.cos(theta), np.sin(theta), 0, 0, 0, 0],
+                              [-np.sin(theta), np.cos(theta), 0, 0, 0, 0],
                               [0, 0, 1, 0, 0, 0],
-                              [0, 0, 0, np.cos(self.angle), np.sin(self.angle), 0],
-                              [0, 0, 0, np.sin(self.angle), np.cos(self.angle), 0],
+                              [0, 0, 0, np.cos(theta), np.sin(theta), 0],
+                              [0, 0, 0, np.sin(theta), np.cos(theta), 0],
                               [0, 0, 0, 0, 0, 1]])
         return translation_matrix
     
