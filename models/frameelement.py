@@ -32,14 +32,17 @@ class FrameElement:
                                   [0, 6*self.I/L, 2*self.I, 0, -6*self.I/L, 4*self.I]])
         return local_stiffness_matrix
     
-    def translation(self):
+    def transformation(self):
         theta = self.angle()
-        translation_matrix = np.array([[np.cos(theta), np.sin(theta), 0, 0, 0, 0],
+        transformation_matrix = np.array([[np.cos(theta), np.sin(theta), 0, 0, 0, 0],
                               [-np.sin(theta), np.cos(theta), 0, 0, 0, 0],
                               [0, 0, 1, 0, 0, 0],
                               [0, 0, 0, np.cos(theta), np.sin(theta), 0],
                               [0, 0, 0, np.sin(theta), np.cos(theta), 0],
                               [0, 0, 0, 0, 0, 1]])
-        return translation_matrix
+        return transformation_matrix
+    
+    def global_stiffness(self):
+        pass
     
 
