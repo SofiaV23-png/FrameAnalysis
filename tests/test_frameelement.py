@@ -2,6 +2,13 @@ import numpy as np
 from models.frameelement import FrameElement
 from models.node import Node
 
+def test_dof_map():
+    node1 = Node(3, 1, 1)
+    node2 = Node(2, 0, 0)
+    f_element = FrameElement(node1, node2, 1, 1, 1)
+
+    assert f_element.map_dof() == [6, 7, 8, 3, 4, 5]
+
 def test_length():
     node1 = Node(1, 0, 0)
     node2 = Node(2, 3000, 4000)
@@ -128,6 +135,22 @@ def test_global_stiffness_horizontal():
     k = f_element.local_stiffness()
     k_global = f_element.global_stiffness()
 
-    np.testing.assert_allclose(k_global, k)
+    np.testing.assert_allclose(k_global, k) 
 
-# def test_global_stiffness_vertical() against known result
+def test_global_stiffness_vertical():
+    node1 = Node(1, 0, 0)
+    node2 = Node(2, 1000, 0)
+
+    f_element = FrameElement(
+        node1,
+        node2,
+        E=200000,
+        A=2000,
+        I=1e6
+    )
+
+    k = f_element.local_stiffness()
+    T = f_element.transformation()
+    K = f_element.global_stiffness()
+
+    np.testing.assert_allclose(K, T.T @ k @ T)

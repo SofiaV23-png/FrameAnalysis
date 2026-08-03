@@ -10,6 +10,10 @@ class FrameElement:
         self.A = A
         self.I = I
 
+    def map_dof(self):
+        dofs = self.start.nodal_dof() + self.end.nodal_dof()
+        return dofs
+
     def length(self):
         length = np.sqrt((self.end.x-self.start.x)**2 + (self.end.y-self.start.y)**2)
         return length
@@ -43,6 +47,9 @@ class FrameElement:
         return transformation_matrix
     
     def global_stiffness(self):
-        pass
+        T = self.transformation()
+        k_local = self.local_stiffness()
+        global_stiffness_matrix = T.T @ k_local @ T
+        return global_stiffness_matrix
     
 
