@@ -6,7 +6,7 @@ class Assembler:
     def __init__(self, frame):
         self.frame = frame
 
-    def assemble_stiffness():
+    def assemble_stiffness(self):
         n_dof = len(self.frame.nodes) * 3
         K = np.zeros((n_dof, n_dof))
 
@@ -17,5 +17,5 @@ class Assembler:
 
         return K
 
-    def assemble_loads():
+    def assemble_loads(self):
         pass
