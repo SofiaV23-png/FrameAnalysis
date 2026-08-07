@@ -1,8 +1,9 @@
 import numpy as np
 import math
+from node import Node
 
 class FrameElement:
-    def __init__(self, start, end, E, A, I):
+    def __init__(self, start: Node, end: Node, E: float, A: float, I: float):
         self.start = start
         self.end = end
         # Units are MPa for E, mm^2 for A, mm^4 for I
