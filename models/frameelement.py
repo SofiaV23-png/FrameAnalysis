@@ -1,6 +1,6 @@
 import numpy as np
 import math
-from node import Node
+from .node import Node
 
 class FrameElement:
     def __init__(self, start: Node, end: Node, E: float, A: float, I: float):
