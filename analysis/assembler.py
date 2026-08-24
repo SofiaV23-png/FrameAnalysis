@@ -18,4 +18,12 @@ class Assembler:
         return K
 
     def assemble_loads(self):
-        pass
+        n_dof = len(self.frame.nodes) * 3
+        F = np.zeros((n_dof, 1))
+
+        for load in self.frame.point_loads:
+            f = load.equivalent_nodal_load()
+            dofs = load.element.map_dof()
+            F[dofs] += f
+
+        return F
