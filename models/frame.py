@@ -8,4 +8,7 @@ class Frame:
         self.elements = elements
         self.point_loads = point_loads
 
-    
+    def connect_point_loads_to_elements(self):
+        for load in self.point_loads:
+            if load not in load.element.applied_point_loads:
+                load.element.applied_point_loads.append(load)

@@ -10,6 +10,7 @@ class FrameElement:
         self.E = E
         self.A = A
         self.I = I
+        self.applied_point_loads = []
 
     def map_dof(self):
         dofs = self.start.nodal_dof() + self.end.nodal_dof()
