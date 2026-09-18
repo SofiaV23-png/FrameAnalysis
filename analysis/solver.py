@@ -40,3 +40,7 @@ class Solver:
         u[free_dofs, :] = u_free
 
         return u
+
+    def return_reactions(self, K, F, u):
+        R = K @ u - F
+        return R
