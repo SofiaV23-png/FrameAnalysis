@@ -43,3 +43,12 @@ class Processor:
             all_element_internal_forces[i] = element_internal_forces
 
         return all_element_internal_forces
+
+    def calculate_all_element_displacements(self):
+        all_element_displacements = {}
+        
+        for i, element in enumerate(self.frame.elements, start=1):
+            element_displacements = self.calculate_element_displacement(element)
+            all_element_displacements[i] = element_displacements
+
+        return all_element_displacements

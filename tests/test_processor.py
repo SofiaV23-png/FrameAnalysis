@@ -6,6 +6,7 @@ from models.node import Node
 from analysis.solver import Solver
 from analysis.assembler import Assembler
 from analysis.processor import Processor
+import pytest
 
 def test_calculate_element_displacement():
     node_1 = Node(1, 0, 0)
@@ -124,7 +125,8 @@ def test_calculate_internal_forces():
 
     np.testing.assert_allclose(forces_result, forces_expected)
 
-def test_calculate_all_internal_forces():
+@pytest.fixture
+def frame_with_point_loads():
     node_1 = Node(1, 0, 0)
     node_2 = Node(2, 1, 0)
     node_3 = Node(3, 1, 1)
@@ -154,7 +156,12 @@ def test_calculate_all_internal_forces():
                   [0.09]])
 
     processor = Processor(frame, u)
-    
+
+    return element_1, element_2, processor
+
+def test_calculate_all_internal_forces(frame_with_point_loads):
+    element_1, element_2, processor = frame_with_point_loads
+
     all_forces_result = processor.calculate_all_internal_forces()
 
     assert set(all_forces_result.keys()) == {1, 2}
@@ -167,6 +174,23 @@ def test_calculate_all_internal_forces():
     assert np.allclose(
         all_forces_result[2],
         processor.calculate_internal_forces(element_2)
+    )
+
+def test_calculate_all_element_displacements(frame_with_point_loads):
+    element_1, element_2, processor = frame_with_point_loads
+
+    all_displacements_result = processor.calculate_all_element_displacements()
+
+    assert set(all_displacements_result.keys()) == {1, 2}
+
+    assert np.allclose(
+        all_displacements_result[1],
+        processor.calculate_element_displacement(element_1)
+    )
+
+    assert np.allclose(
+        all_displacements_result[2],
+        processor.calculate_element_displacement(element_2)
     )
 
 def test_internal_forces_cantilever():
