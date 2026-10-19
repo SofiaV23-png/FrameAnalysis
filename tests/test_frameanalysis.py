@@ -60,7 +60,6 @@ def test_run_returns_results_object(analysis):
 def test_cantilever_displacements_match_theory(analysis):
     results = analysis.run()
 
-    # DOF order: [u1, v1, rz1, u2, v2, rz2]
     expected_displacements = np.array([
         [0],
         [0],
@@ -85,7 +84,6 @@ def test_support_reactions_balance_applied_load(analysis):
 
     assert results.R.shape == (6, 1)
 
-    # Fixed-end reactions: horizontal force, vertical force, moment.
     expected_support_reactions = np.array([0, 10, 10])
 
     np.testing.assert_allclose(
@@ -94,7 +92,6 @@ def test_support_reactions_balance_applied_load(analysis):
         atol=1e-9,
     )
 
-    # Reactions at the unconstrained end should be zero.
     np.testing.assert_allclose(
         results.R[[3, 4, 5], 0],
         np.zeros(3),
