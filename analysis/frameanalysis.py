@@ -24,6 +24,8 @@ class FrameAnalysis:
         R = solver.return_reactions(K, F, u)
 
         # Calculate element displacements and internal forces
+        self.frame.connect_point_loads_to_elements()
+
         processor = Processor(self.frame, u)
 
         element_forces = processor.calculate_all_internal_forces()

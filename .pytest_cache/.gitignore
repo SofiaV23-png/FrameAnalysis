@@ -1,0 +1,10 @@
+# Created by pytest automatically.
+# Virtual environments
+FA_venv/
+.venv/
+venv/
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
